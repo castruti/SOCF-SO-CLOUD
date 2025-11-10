@@ -3,20 +3,17 @@ import os
 import platform
 import psutil
 
-# Expor a app como APP para gunicorn: gunicorn app:APP
 APP = Flask(__name__)
 
-# Coloque aqui os nomes dos integrantes
 INTEGRANTES = [
-    "Seu Nome Completo",
-    "Nome do Segundo Integrante"  # remova/adicione conforme necessário
+    "Gabriel Calado da Silva Castro",
+
 ]
 
 def coletar_metricas():
     p = psutil.Process(os.getpid())
     pid = p.pid
-    memoria_mb = p.memory_info().rss / (1024 * 1024)  # em MB
-    # cpu_percent: chama-se com pequeno intervalo para medir
+    memoria_mb = p.memory_info().rss / (1024 * 1024) 
     cpu_pct = p.cpu_percent(interval=0.1)
     so = platform.system() + (" (" + platform.platform() + ")" )
     return {
@@ -28,7 +25,6 @@ def coletar_metricas():
 
 @APP.route("/info")
 def rota_info():
-    # Retorna apenas os nomes (formato JSON)
     return jsonify({"integrantes": INTEGRANTES})
 
 @APP.route("/metricas")
